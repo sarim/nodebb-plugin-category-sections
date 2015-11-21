@@ -45,6 +45,7 @@ define('admin/plugins/category-sections', ['settings'], function(settings) {
 					$(ev.target).removeAttr('style');
 				}
 			});
+    $( ".sections" ).sortable();
 	}
 
 	function saveSections() {
