@@ -1,11 +1,14 @@
 {
   "name": "nodebb-plugin-category-sections",
-  "version": "0.1.7",
+  "version": "0.1.8",
+  "nbbpm": {
+    "compatibility": "^0.9.0"
+  },
   "description": "Category Sections for NodeBB",
   "main": "library.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/psychobunny/nodebb-plugin-category-sections"
+    "url": "git+https://github.com/NodeBB/nodebb-plugin-category-sections.git"
   },
   "keywords": [
     "nodebb",
@@ -20,10 +23,7 @@
   },
   "license": "BSD-2-Clause",
   "bugs": {
-    "url": "https://github.com/psychobunny/nodebb-plugin-category-sections/issues"
+    "url": "https://github.com/NodeBB/nodebb-plugin-category-sections/issues"
   },
   "readmeFilename": "README.md",
-  "nbbpm": {
-    "compatibility": "^0.7.0"
-  }
 }
