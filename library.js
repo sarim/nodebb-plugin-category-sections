@@ -26,7 +26,8 @@ plugin.init = function(params, callback) {
 		});
 	};
 
-	modifyCategoryTpl(callback);
+  callback();
+  // modifyCategoryTpl(callback);
 };
 
 plugin.addAdminNavigation = function(header, callback) {
@@ -41,12 +42,12 @@ plugin.addAdminNavigation = function(header, callback) {
 
 plugin.getCategories = function(params, callback) {
 	getCategories(params, function(err, data) {
-		params.res.render(data.tpl, data.data);
+		params.res.render('sections', data.data);
 	});
 };
 
 function saveSections(data, callback) {
-	db.set('plugins:category-sections:sections', data, callback);
+	db.set('plugins:category-sections:sections', JSON.stringify(data), callback);
 }
 
 function renderAdmin(req, res, next) {
@@ -116,37 +117,6 @@ function getCategories(params, callback) {
 		};
 
 	controllers.categories.list(req, override, params.next);
-}
-
-function modifyCategoryTpl(callback) {
-	var fs = require('fs'),
-		path = require('path'),
-		nconf = module.parent.require('nconf'),
-		tplPath = path.join(nconf.get('base_dir'), 'public/templates/categories.tpl'),
-		theme = module.parent.require("./meta").config["theme:id"];
-
-	fs.readFile(tplPath, function(err, tpl) {
-		if (err) {
-			return callback(err);
-		}
-		tpl = tpl.toString();
-		var block = templates.getBlock(tpl, 'categories');
-
-		if (!tpl.match('<!-- BEGIN sections -->')) {
-			if (theme === "nodebb-theme-persona") {
-				tpl = tpl.replace('<ul class="categories"', '<ul class="sections"');
-				tpl = tpl.replace(block, '<!-- BEGIN sections --><li class="row clearfix section"><h3>{sections.name}</h3> <ul class="categories">' + block + '</ul></li><!-- END sections -->');
-			} else {
-				tpl = tpl.replace(block, '<!-- BEGIN sections --><div class="col-xs-12"><h1>{sections.name}</h1>' + block + '</div><div class="clearfix"></div><!-- END sections -->');
-			}
-
-			tpl = tpl.replace(/\{categories/g, '{sections.categories');
-			tpl = tpl.replace(/IF categories/g, 'IF sections.categories');
-			tpl = tpl.replace(/<!-- IF !disableMasonry -->masonry<!-- ENDIF !disableMasonry -->/, '');
-		}
-
-		fs.writeFile(tplPath, tpl, callback);
-	});
 }
 
 module.exports = plugin;
